@@ -3,6 +3,7 @@
 import requests
 import random
 import string
+import os
 
 from bs4 import BeautifulSoup as BS
 from user_agent import generate_user_agent
@@ -32,7 +33,12 @@ def get_image_by_string(string):
 
 
 def main():
-    f = open("images.html", "a")
+    clear = input("Do you want to clear images.html? [Y/n]: ")
+
+    if clear.lower() == 'y':
+        os.system('rm images.html')
+
+    f = open("images.html", "w+")
 
     try:
         count = 0

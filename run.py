@@ -34,6 +34,7 @@ def get_image_by_string(string):
 
 def main():
     clear = input("Do you want to clear images.html? [Y/n]: ")
+    count = int(input("Enter the number of images: "))
 
     if clear.lower() == 'y':
         os.system('rm images.html')
@@ -41,18 +42,21 @@ def main():
     f = open("images.html", "w+")
 
     try:
-        count = 0
+        counter = 0
         str_gen = string_generator(6)
 
         for some_str in str_gen:
             image = get_image_by_string(some_str)
 
             if image:
-                count += 1
+                counter += 1
 
-                print(f"{count}. image: {image}")
+                print(f"{counter}. image: {image}")
 
                 f.write(f'<img src="{image}" style="border: 3px solid red">')
+
+                if counter >= count:
+                    break
 
     except KeyboardInterrupt:
         print("\nExiting.")

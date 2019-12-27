@@ -36,10 +36,12 @@ def main():
     clear = input("Do you want to clear images.html? [Y/n]: ")
     count = int(input("Enter the number of images: "))
 
-    if clear.lower() == 'y':
-        os.system('rm images.html')
+    if clear.lower() == "y":
+        file_mode = "w"
+    else:
+        file_mode = "a"
 
-    f = open("images.html", "w+")
+    f = open("images.html", file_mode)
 
     try:
         counter = 0

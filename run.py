@@ -3,7 +3,6 @@
 import requests
 import random
 import string
-import os
 
 from bs4 import BeautifulSoup as BS
 from user_agent import generate_user_agent

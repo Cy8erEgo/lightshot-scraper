@@ -52,7 +52,7 @@ def main():
             if image:
                 counter += 1
 
-                print(f"{counter}. image: {image}")
+                print(f"{counter}. image:\t{image}")
 
                 f.write(f'<img src="{image}" style="border: 3px solid red">')
 

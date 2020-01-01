@@ -3,6 +3,7 @@
 import requests
 import random
 import string
+import argparse
 
 from bs4 import BeautifulSoup as BS
 from user_agent import generate_user_agent
@@ -32,16 +33,36 @@ def get_image_by_string(string):
 
 
 def main():
-    clear = input("Do you want to clear images.html? [Y/n]: ")
-    count = int(input("Enter the number of images: "))
+    """ Main entry point """
 
-    if clear.lower() == "y":
+    # set up argparse
+    argparser = argparse.ArgumentParser()
+    argparser.add_argument(
+        "-n", "--count", type=int, default=100,
+        help="number of images that will be scraped"
+    )
+    argparser.add_argument(
+        "-c", "--clear", type=int, nargs="?", const=1, default=0, 
+        help="Clear saved images or not"
+    )
+    args = argparser.parse_args()
+
+    # open file for writing
+    clear = True if args.clear else False
+
+    if clear:
         file_mode = "w"
     else:
         file_mode = "a"
 
+    print("Target:", args.count)
+    print("Clear:", str(clear))
+
+    print()
+
     f = open("images.html", file_mode)
 
+    # scraping
     try:
         counter = 0
         str_gen = string_generator(6)
@@ -56,7 +77,7 @@ def main():
 
                 f.write(f'<img src="{image}" style="border: 3px solid red">')
 
-                if counter >= count:
+                if counter >= args.count:
                     break
 
     except KeyboardInterrupt:

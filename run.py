@@ -42,8 +42,8 @@ def main():
         help="number of images that will be scraped"
     )
     argparser.add_argument(
-        "-c", "--clear", type=int, nargs="?", const=1, default=0, 
-        help="Clear saved images or not"
+        "-c", "--clear", type=int, nargs="?", const=1, default=0,
+        help="clear saved images"
     )
     args = argparser.parse_args()
 

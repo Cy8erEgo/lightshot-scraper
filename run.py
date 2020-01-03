@@ -42,23 +42,19 @@ def main():
         help="number of images that will be scraped"
     )
     argparser.add_argument(
-        "-c", "--clear", type=int, nargs="?", const=1, default=0,
+        "-c", "--clear", action="store_true", default=False,
         help="clear saved images"
     )
     args = argparser.parse_args()
 
     # open file for writing
-    clear = True if args.clear else False
-
-    if clear:
+    if args.clear:
         file_mode = "w"
     else:
         file_mode = "a"
 
     print("Target:", args.count)
-    print("Clear:", str(clear))
-
-    print()
+    print("Clear:", str(args.clear), end="\n")
 
     f = open("images.html", file_mode)
 

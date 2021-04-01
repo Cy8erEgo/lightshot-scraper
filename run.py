@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import requests
 import random
 import string
@@ -7,6 +5,19 @@ import argparse
 
 from bs4 import BeautifulSoup as BS
 from user_agent import generate_user_agent
+
+
+def setup_argparse():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "-n", "--count", type=int, default=100,
+        help="number of images that will be scraped"
+    )
+    parser.add_argument(
+        "-c", "--clear", action="store_true", default=False,
+        help="clear saved images"
+    )
+    return parser.parse_args()
 
 
 def string_generator(length):
@@ -36,52 +47,36 @@ def main():
     """ Main entry point """
 
     # set up argparse
-    argparser = argparse.ArgumentParser()
-    argparser.add_argument(
-        "-n", "--count", type=int, default=100,
-        help="number of images that will be scraped"
-    )
-    argparser.add_argument(
-        "-c", "--clear", action="store_true", default=False,
-        help="clear saved images"
-    )
-    args = argparser.parse_args()
+    args = setup_argparse()
 
-    # open file for writing
-    if args.clear:
-        file_mode = "w"
-    else:
-        file_mode = "a"
+    # scraping
+    file_mode = "w" if args.clear else "a"
 
     print("Target:", args.count)
     print("Clear:", str(args.clear), end="\n")
 
-    f = open("images.html", file_mode)
-
-    # scraping
-    try:
+    with open("images.html", file_mode) as f:
         counter = 0
         str_gen = string_generator(6)
 
         for some_str in str_gen:
             image = get_image_by_string(some_str)
+            if not image:
+                continue
 
-            if image:
-                counter += 1
+            counter += 1
 
-                print(f"{counter}. image:\t{image}")
+            print(f"{counter}. image:\t{image}")
 
-                f.write(f'<img src="{image}" style="border: 3px solid red">')
+            f.write(f'<img src="{image}" style="border: 3px solid red">')
 
-                if counter >= args.count:
-                    break
-
-    except KeyboardInterrupt:
-        print("\nExiting.")
-        exit()
-    finally:
-        f.close()
+            if counter >= args.count:
+                break
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("\nExiting.")
+        exit()
